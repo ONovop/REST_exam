@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class DBUser(models.Model):
     name = models.CharField(max_length=100)
@@ -53,11 +54,11 @@ class Passes(models.Model):
 
     name = models.CharField(max_length=50)
     time_add = models.DateTimeField(auto_now_add=True)
-    latitude = models.FloatField()
+    latitude = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(90)])
     latitude_zone = models.CharField(max_length=1, choices=LAT_ZONES, default='N')
-    longitude = models.FloatField()
+    longitude = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(180)])
     longitude_zone = models.CharField(max_length=1, choices=LONG_ZONES, default='E')
-    height = models.IntegerField()
+    height = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(8878)])
     by_user = models.ForeignKey(DBUser, on_delete=models.CASCADE)
     zone = models.ForeignKey(LocalZones, on_delete=models.CASCADE)
     winter_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS)
