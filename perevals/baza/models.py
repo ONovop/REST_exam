@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
 class DBUser(models.Model):
-    name = models.CharField()
+    name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20, unique=True)
 
@@ -11,7 +11,7 @@ class GlobalZones(models.Model):
 
 class LocalZones(models.Model):
     name = models.CharField(max_length=50)
-    global_zone = models.ForeignKey(GlobalZones)
+    global_zone = models.ForeignKey(GlobalZones, on_delete=models.CASCADE)
 
 class Passes(models.Model):
 
@@ -58,8 +58,8 @@ class Passes(models.Model):
     longitude = models.FloatField()
     longitude_zone = models.CharField(max_length=1, choices=LONG_ZONES, default='E')
     height = models.IntegerField()
-    by_user = models.ForeignKey(DBUser)
-    zone = models.ForeignKey(LocalZones)
+    by_user = models.ForeignKey(DBUser, on_delete=models.CASCADE)
+    zone = models.ForeignKey(LocalZones, on_delete=models.CASCADE)
     winter_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS)
     spring_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS)
     summer_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS)
@@ -70,4 +70,4 @@ class Passes(models.Model):
 class Photo(models.Model):
     photo = models.ImageField()
     time_add = models.DateTimeField(auto_now_add=True)
-    mpass = models.ForeignKey(Passes)
+    mpass = models.ForeignKey(Passes, on_delete=models.CASCADE)
