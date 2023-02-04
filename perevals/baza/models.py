@@ -3,9 +3,9 @@ from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class DBUser(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=200)
     email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=20, unique=True)
+    phone = models.CharField(max_length=20)
 
 class GlobalZones(models.Model):
     name = models.CharField(max_length=50)
@@ -52,7 +52,7 @@ class Passes(models.Model):
         ('R', 'rejected'),
     ]
 
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
     time_add = models.DateTimeField(auto_now_add=True)
     latitude = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(90)])
     latitude_zone = models.CharField(max_length=1, choices=LAT_ZONES, default='N')
@@ -61,14 +61,14 @@ class Passes(models.Model):
     height = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(8878)])
     by_user = models.ForeignKey(DBUser, related_name='dbusers', on_delete=models.CASCADE)
     zone = models.ForeignKey(LocalZones, related_name='zones', on_delete=models.CASCADE)
-    winter_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS)
-    spring_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS)
-    summer_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS)
-    autumn_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS)
-    activ = ArrayField(models.CharField(max_length=2, choices=ACTIVITIES), size=11)
+    winter_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS, blank=True)
+    spring_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS, blank=True)
+    summer_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS, blank=True)
+    autumn_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS, blank=True)
+    activ = ArrayField(models.CharField(max_length=2, choices=ACTIVITIES), size=11, blank=True)
     status = models.CharField(max_length=1, choices=STATUSES, default='N')
 
 class Photo(models.Model):
     photo = models.ImageField()
     time_add = models.DateTimeField(auto_now_add=True)
-    mpass = models.ForeignKey(Passes, on_delete=models.CASCADE)
+    mpass = models.ForeignKey(Passes, related_name='photos', on_delete=models.CASCADE)

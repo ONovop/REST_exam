@@ -6,8 +6,8 @@ from .models import *
 from .serializers import *
 
 class PassesViewset(viewsets.ModelViewSet):
-    queryset = DBUser.objects.all()
-    serializer_class = DBUserSerial
+    queryset = Passes.objects.all()
+    serializer_class = PassesSerial
 
 class PhotoViewset(viewsets.ModelViewSet):
     queryset = Photo.objects.all()

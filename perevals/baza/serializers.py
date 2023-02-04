@@ -4,7 +4,7 @@ from rest_framework import serializers
 class PhotoSerial(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Photo
-        fields = ['photo', 'mpass__id', 'mpass__name']
+        fields = ['photo']
 
 
 class ZoneSerial(serializers.HyperlinkedModelSerializer):
@@ -12,9 +12,15 @@ class ZoneSerial(serializers.HyperlinkedModelSerializer):
         model = LocalZones
         fields = ['name']
 
+class DBUserSerial(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = DBUser
+        fields = ['name', 'email', 'phone']
+
 class PassesSerial(serializers.HyperlinkedModelSerializer):
-#    dbusers = DBUserSerial(many=True)
-#    zones = ZoneSerial(many=True)
+    dbusers = DBUserSerial(many=False, source='by_user')
+    zones = ZoneSerial(many=False, source='zone')
+    photos = PhotoSerial(many=True)
 
     class Meta:
         model = Passes
@@ -31,11 +37,10 @@ class PassesSerial(serializers.HyperlinkedModelSerializer):
             'summer_dif',
             'autumn_dif',
             'activ',
+            'dbusers',
+            'zones',
+            'photos',
         ]
 
-class DBUserSerial(serializers.HyperlinkedModelSerializer):
-    dbusers = PassesSerial(many=True)
-    class Meta:
-        model = DBUser
-        fields = ['name', 'email', 'phone', 'dbusers']
+
 
