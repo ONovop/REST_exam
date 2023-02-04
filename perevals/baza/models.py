@@ -60,7 +60,7 @@ class Passes(models.Model):
     longitude_zone = models.CharField(max_length=1, choices=LONG_ZONES, default='E')
     height = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(8878)])
     by_user = models.ForeignKey(DBUser, related_name='dbusers', on_delete=models.CASCADE)
-    zone = models.ForeignKey(LocalZones, related_name='zones', on_delete=models.CASCADE)
+    zone = models.ForeignKey(LocalZones, related_name='zones', blank=True, null=True, on_delete=models.CASCADE)
     winter_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS, blank=True)
     spring_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS, blank=True)
     summer_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS, blank=True)
