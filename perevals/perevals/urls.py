@@ -17,11 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from rest_framework_swagger.views import get_swagger_view
 from baza.views import *
 
 router = routers.DefaultRouter()
 router.register(r'passes', PassesViewset)
 router.register(r'photos', PhotoViewset)
+
+schema_view = get_swagger_view(title='Passes API')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,4 +33,5 @@ urlpatterns = [
     path('submitdata/', submitData),
     path('submitdata/<int:pk>', get_patch),
     path('submitdata/user/<str:email>', user_filter),
+    path('swagger/', schema_view),
 ]
