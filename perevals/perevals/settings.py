@@ -21,8 +21,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
+env = environ.Env()
+environ.Env.read_env()
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!5b=-ty4$+!-2^!r4w6yngsgg+!78$6ak&d@$aw*q+9i7pq=mc'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -77,8 +80,6 @@ WSGI_APPLICATION = 'perevals.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-env = environ.Env()
-environ.Env.read_env()
 
 DATABASES = {
     'default': {
