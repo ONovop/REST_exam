@@ -150,3 +150,44 @@ def get_patch(request, **kwargs):
             "message": "Wrong request",
             "id": None,
         }))
+
+def user_filter(request, **kwargs):
+    us_email = kwargs.get('email')
+    if not DBUser.objects.filter(email=us_email).exists():
+        return HttpResponse(json.dumps({
+            "status": 404,
+            "message": "Such user doesn't exist",
+            "email": us_email,
+        }))
+    if request.method != 'GET':
+        return HttpResponse(json.dumps({
+            "status": 500,
+            "message": "Wrong request",
+            "id": None,
+        }))
+    passes = Passes.objects.filter(by_user__email=us_email)
+    result = {}
+    for i in passes:
+        photos = []
+        if Photo.objects.filter(mpass=i).exists():
+            photos_qs = Photo.objects.filter(mpass=i)
+            for j in photos_qs:
+                photos.append(j.photo)
+        result.update({i.id: {
+            "title": i.name,
+            "latitude": i.latitude,
+            "latitude_zone": i.latitude_zone,
+            "longitude": i.longitude,
+            "longitude_zone": i.longitude_zone,
+            "height": i.height,
+            "winter_dif": i.winter_dif,
+            "spring_dif": i.spring_dif,
+            "summer_dif": i.summer_dif,
+            "autumn_dif": i.autumn_dif,
+            "activities": i.activ,
+            "zone": i.zone.name,
+            "g_zone": i.zone.global_zone.name,
+            "status": i.status,
+            "photos": photos,
+        }})
+    return HttpResponse(json.dumps(result))

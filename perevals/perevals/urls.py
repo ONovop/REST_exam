@@ -29,4 +29,5 @@ urlpatterns = [
     path('api/', include('rest_framework.urls', namespace='rest_framework')),
     path('submitdata/', submitData),
     path('submitdata/<int:pk>', get_patch),
+    path('submitdata/user/<str:email>', user_filter),
 ]
