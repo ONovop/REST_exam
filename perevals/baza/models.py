@@ -65,7 +65,7 @@ class Passes(models.Model):
     spring_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS, blank=True)
     summer_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS, blank=True)
     autumn_dif = models.CharField(max_length=2, choices=DIFFICULT_LEVELS, blank=True)
-    activ = ArrayField(models.CharField(max_length=2, choices=ACTIVITIES), size=11, blank=True)
+    activ = ArrayField(models.CharField(max_length=2, choices=ACTIVITIES), size=11, blank=True, null=True)
     status = models.CharField(max_length=1, choices=STATUSES, default='N')
 
 class Photo(models.Model):

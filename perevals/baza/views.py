@@ -92,8 +92,6 @@ def get_patch(request, **kwargs):
             "summer_dif": obj.summer_dif,
             "autumn_dif": obj.autumn_dif,
             "activities": obj.activ,
-            "zone": obj.zone.name,
-            "g_zone": obj.zone.global_zone.name,
             "status": obj.status,
             "username": obj.by_user.name,
             "email": obj.by_user.email,
@@ -108,7 +106,7 @@ def get_patch(request, **kwargs):
                 "is": obj_id,
             }))
         try:
-            req = request.body
+            req = json.loads(request.body)
             obj.name = req['title']
             obj.latitude = req['latitude']
             obj.latitude_zone = req['latitude_zone']
@@ -136,7 +134,7 @@ def get_patch(request, **kwargs):
             return HttpResponse(json.dumps({
                 "state": 1,
                 "message": None,
-                id: obj_id,
+                "id": obj_id,
             }))
         except:
             return HttpResponse(json.dumps({
@@ -185,8 +183,6 @@ def user_filter(request, **kwargs):
             "summer_dif": i.summer_dif,
             "autumn_dif": i.autumn_dif,
             "activities": i.activ,
-            "zone": i.zone.name,
-            "g_zone": i.zone.global_zone.name,
             "status": i.status,
             "photos": photos,
         }})
